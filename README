@@ -1,0 +1,17 @@
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+Documentation is provided in the module file.
+Upon install you can read it via:
+
+    perldoc Redis::hiredis
+
+Or befre you install:
+
+    perldoc hiredis.pm
