@@ -1,7 +1,7 @@
 package Redis::hiredis;
 
 use strict;
-our $VERSION = "0.9.2.5";
+our $VERSION = "0.9.2.6";
 require XSLoader;
 XSLoader::load('Redis::hiredis', $VERSION);
 
@@ -129,6 +129,9 @@ A discusion of pipelining can be found here:
 L<http://redis.io/topics/pipelining>
 
 Documentation on the hiredis client can be found here:
-L<http://github.com/antirez/hiredis>
+L<https://github.com/antirez/hiredis>
+
+Redis::hiredis on github:
+L<https://github.com/neophenix/redis-hiredis>
 
 =cut

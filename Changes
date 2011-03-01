@@ -1,3 +1,6 @@
+0.9.2.6 - Mon Feb 28 20:43:00 EST 2011
+        * update doc links
+
 0.9.2.5 - Sat Feb 19 21:02:00 EST 2011
         * command supports array of args now too command("set", "foo", "bar")
         * Added autoload to allow calls like set("foo", "bar") and get("foo")
