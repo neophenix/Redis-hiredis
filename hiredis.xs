@@ -145,6 +145,10 @@ redis_hiredis_command(self, ...)
         else {
             reply  = redisCommand(self->context, (char *)SvPV_nolen(ST(1)));
         }
+
+        if(reply == NULL)
+            croak("error processing command: %s\n", self->context->errstr);
+
         RETVAL = _read_reply(self, reply);
         freeReplyObject(reply);
     OUTPUT:

@@ -1,7 +1,7 @@
 package Redis::hiredis;
 
 use strict;
-our $VERSION = "0.9.2.6";
+our $VERSION = "0.9.2.7";
 require XSLoader;
 XSLoader::load('Redis::hiredis', $VERSION);
 
