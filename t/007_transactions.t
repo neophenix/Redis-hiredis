@@ -1,4 +1,4 @@
-use Test::More tests => 14;
+use Test::More tests => 18;
 require_ok ( 'Redis::hiredis' );
 my $h = Redis::hiredis->new();
 isa_ok($h, 'Redis::hiredis');
@@ -46,4 +46,14 @@ SKIP: {
     is($r->[0], 1, 'list exec 0');
     is($r->[1], 2, 'list exec 1');
     is($r->[2], 3, 'list exec 2');
+
+    $h->multi();
+    $h->set($prefix."tefoo", 3);
+    $h->lpop($prefix."tefoo");
+    $h->set($prefix."tefoo", 4);
+    $r = $h->exec();
+    ok(ref $r eq 'ARRAY', 'txn w/ error return');
+    is($r->[0], 'OK', 'txn w/ error return [0]');
+    like($r->[1], qr/^ERR/, 'txn w/ error return [1]');
+    is($r->[2], 'OK', 'txn w/ error return [2]');
 };
