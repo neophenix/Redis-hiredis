@@ -26,6 +26,8 @@ SV * _read_reply (Redis__hiredis self, redisReply *reply) {
         return _read_multi_bulk_reply(self, reply);
     }
     else {
+        if ( reply->type == REDIS_REPLY_ERROR ) 
+          croak("%s",reply->str);
         return _read_bulk_reply(self, reply);
     }
 }
@@ -44,11 +46,9 @@ SV * _read_multi_bulk_reply (Redis__hiredis self, redisReply *reply) {
 SV * _read_bulk_reply (Redis__hiredis self, redisReply *reply) {
     SV *sv;
 
-    if ( reply->type == REDIS_REPLY_ERROR ) {
-        croak("%s",reply->str);
-    }
-    else if ( reply->type == REDIS_REPLY_STRING 
-           || reply->type == REDIS_REPLY_STATUS ) {
+    if ( reply->type == REDIS_REPLY_STRING 
+            || reply->type == REDIS_REPLY_STATUS 
+            || reply->type == REDIS_REPLY_ERROR ) {
         sv = newSVpvn(reply->str,reply->len);
         if (self->utf8) {
             sv_utf8_decode(sv);
