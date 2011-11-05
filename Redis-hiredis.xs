@@ -92,6 +92,33 @@ void assert_connected (redhi_obj *self) {
     }
 }
 
+static redisContext *redisContextInit(void) {
+    redisContext *c;
+
+    c = calloc(1,sizeof(redisContext));
+    if (c == NULL)
+        return NULL;
+
+    c->err = 0;
+    c->errstr[0] = '\0';
+    c->obuf = sdsempty();
+    c->reader = redisReaderCreate();
+    return c;
+}
+
+int redisContextConnectFd(redisContext *c, int fd) {
+    c->fd = fd;
+    c->flags |= REDIS_CONNECTED;
+    return REDIS_OK;
+}
+
+redisContext *redisConnectFd(int fd) {
+    redisContext *c = redisContextInit();
+    c->flags |= REDIS_BLOCK;
+    redisContextConnectFd(c, fd);
+    return c;
+}
+
 MODULE = Redis::hiredis PACKAGE = Redis::hiredis PREFIX = redis_hiredis_
 
 void
@@ -111,6 +138,16 @@ redis_hiredis_connect_unix(self, path)
     char *path
     CODE:
         self->context = redisConnectUnix(path);
+        if ( self->context->err ) {
+            croak("%s",self->context->errstr);
+        }
+
+void
+redis_hiredis_connect_fd(self, fd)
+    Redis::hiredis self
+    int fd
+    CODE:
+        self->context = redisConnectFd(fd);
         if ( self->context->err ) {
             croak("%s",self->context->errstr);
         }

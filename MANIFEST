@@ -25,5 +25,6 @@ t/009_errors.t
 t/010_argv.t
 t/011_autoload.t
 t/012_connect_unix.t
+t/013_connect_fd.t
 typemap
 util.h
