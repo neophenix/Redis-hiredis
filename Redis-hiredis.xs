@@ -169,8 +169,8 @@ redis_hiredis_command(self, ...)
                 params = items - 1;
                 int i;
                 STRLEN len;
-                argv = malloc(params * sizeof(char *));
-                argv_sizes = malloc(params * sizeof(size_t *));
+                Newx(argv, params, char *);
+                Newx(argv_sizes, params, size_t *);
 
                 for ( i = 0; i < params; i++ ) {
                     if ( self->utf8 ) {
@@ -186,8 +186,8 @@ redis_hiredis_command(self, ...)
                 params = _command_from_arr_ref(self, ST(1), &argv, &argv_sizes);
             }
             reply  = redisCommandArgv(self->context, params, (const char**)argv, argv_sizes);
-            free(argv);
-            free(argv_sizes);
+            Safefree(argv);
+            Safefree(argv_sizes);
         }
         else {
             reply  = redisCommand(self->context, (char *)SvPV_nolen(ST(1)));
@@ -229,7 +229,7 @@ redis_hiredis__new(clazz, utf8)
     PREINIT:
         Redis__hiredis self;
     CODE:
-        self = calloc(1, sizeof(struct redhi_obj));
+        Newx(self, 1, struct redhi_obj);
         self->utf8 = utf8;
         RETVAL = self;
     OUTPUT:
@@ -241,3 +241,4 @@ redis_hiredis_DESTROY(self)
     CODE:
         if ( self->context != NULL )
             redisFree(self->context);
+        Safefree(self);
