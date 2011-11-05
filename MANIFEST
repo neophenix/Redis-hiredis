@@ -1,9 +1,6 @@
 Changes
 COPYRIGHT
-Makefile.PL
-MANIFEST
-ppport.h
-README
+hiredis.pm
 hiredis.xs
 lib-fmacros.h
 lib-hiredis.c
@@ -13,6 +10,10 @@ lib-net.h
 lib-sds.c
 lib-sds.h
 lib-util.h
+Makefile.PL
+MANIFEST
+ppport.h
+README
 t/001_strings.t
 t/002_generic.t
 t/003_lists.t
@@ -24,5 +25,5 @@ t/008_pipeline.t
 t/009_errors.t
 t/010_argv.t
 t/011_autoload.t
-hiredis.pm
+t/012_connect_unix.t
 typemap

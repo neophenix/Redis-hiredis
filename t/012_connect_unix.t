@@ -12,8 +12,8 @@ plan skip_all => q/$ENV{'REDISPATH'} isn't set/
 
     my $path = $ENV{'REDISPATH'};
 
-    my $r;
-    my $c = $h->connect_unix($path);
+    my $c;
+    $c = $h->connect_unix($path);
     is($c, undef, 'connect success');
 
     my $r;
