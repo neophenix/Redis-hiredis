@@ -105,6 +105,16 @@ redis_hiredis_connect(self, hostname, port = 6379)
             croak("%s",self->context->errstr);
         }
 
+void
+redis_hiredis_connect_unix(self, path)
+    Redis::hiredis self
+    char *path
+    CODE:
+        self->context = redisConnectUnix(path);
+        if ( self->context->err ) {
+            croak("%s",self->context->errstr);
+        }
+
 SV *
 redis_hiredis_command(self, ...)
     Redis::hiredis self
