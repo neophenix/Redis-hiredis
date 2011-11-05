@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "lib-fmacros.h"
+#include "fmacros.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -44,8 +44,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "lib-net.h"
-#include "lib-sds.h"
+#include "net.h"
+#include "sds.h"
 
 /* Forward declaration */
 void __redisSetError(redisContext *c, int type, sds err);

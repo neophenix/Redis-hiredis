@@ -36,10 +36,10 @@
 #include <errno.h>
 #include <ctype.h>
 
-#include "lib-hiredis.h"
-#include "lib-net.h"
-#include "lib-sds.h"
-#include "lib-util.h"
+#include "hiredis.h"
+#include "net.h"
+#include "sds.h"
+#include "util.h"
 
 typedef struct redisReader {
     struct redisReplyObjectFunctions *fn;

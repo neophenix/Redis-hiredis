@@ -30,7 +30,7 @@
 
 #define SDS_ABORT_ON_OOM
 
-#include "lib-sds.h"
+#include "sds.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

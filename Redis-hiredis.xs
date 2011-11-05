@@ -6,9 +6,9 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "lib-hiredis.h"
-#include "lib-net.h"
-#include "lib-sds.h"
+#include "hiredis.h"
+#include "net.h"
+#include "sds.h"
 
 typedef struct redhi_obj {
     redisContext *context;
