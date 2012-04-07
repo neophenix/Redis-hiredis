@@ -4,7 +4,7 @@ my $h = Redis::hiredis->new();
 isa_ok($h, 'Redis::hiredis');
 
 SKIP: {
-    skip "No REDISHOST defined", 12 if ( ! defined $ENV{'REDISHOST'} );
+    skip "No REDISHOST defined", 16 if ( ! defined $ENV{'REDISHOST'} );
 
     my $host = $ENV{'REDISHOST'};
     my $port = $ENV{'REDISPORT'} || 6379;

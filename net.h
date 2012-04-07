@@ -1,5 +1,8 @@
-/*
- * Copyright (c) 2009-2010, Salvatore Sanfilippo <antirez at gmail dot com>
+/* Extracted from anet.c to work properly with Hiredis error reporting.
+ *
+ * Copyright (c) 2006-2011, Salvatore Sanfilippo <antirez at gmail dot com>
+ * Copyright (c) 2010-2011, Pieter Noordhuis <pcnoordhuis at gmail dot com>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,14 +30,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __UTIL_H
-#define __UTIL_H
-#include <stdlib.h>
+#ifndef __NET_H
+#define __NET_H
 
-/* Abort on out of memory */
-static void redisOOM(void) {
-    fprintf(stderr,"Out of memory in hiredis");
-    exit(1);
-}
+#include "hiredis.h"
+
+#if defined(__sun)
+#define AF_LOCAL AF_UNIX
+#endif
+
+int redisContextSetTimeout(redisContext *c, struct timeval tv);
+int redisContextConnectTcp(redisContext *c, const char *addr, int port, struct timeval *timeout);
+int redisContextConnectUnix(redisContext *c, const char *path, struct timeval *timeout);
 
 #endif

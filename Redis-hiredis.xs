@@ -6,9 +6,9 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "lib-hiredis.h"
-#include "lib-net.h"
-#include "lib-sds.h"
+#include "hiredis.h"
+#include "net.h"
+#include "sds.h"
 
 typedef struct redhi_obj {
     redisContext *context;
@@ -101,6 +101,16 @@ redis_hiredis_connect(self, hostname, port = 6379)
     int port
     CODE:
         self->context = redisConnect(hostname, port);
+        if ( self->context->err ) {
+            croak("%s",self->context->errstr);
+        }
+
+void
+redis_hiredis_connect_unix(self, path)
+    Redis::hiredis self
+    char *path
+    CODE:
+        self->context = redisConnectUnix(path);
         if ( self->context->err ) {
             croak("%s",self->context->errstr);
         }

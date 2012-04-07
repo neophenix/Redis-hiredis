@@ -37,16 +37,22 @@ DESCRIPTION
        METHODS
 
 
-       new([utf8 => 1], [host => "localhost"], [port => 6379])
+       new([utf8 => 1], [host => "localhost"], [port => 6379], [path => "/tmp/redis.sock"])
            Creates a new Redis::hiredis object.
 
            If the host attribute is provided the "connect" method will
+           automatically be called.
+
+           If the path attribute is provided the "connect_unix" method will
            automatically be called.
 
        connect( $hostname, $port )
            $hostname is the hostname of the Redis server to connect to
 
            $port is the port to connect on.  Default 6379
+
+       connect_unix( $path )
+           $path is the path to the unix socket
 
        command( $command_and_args )
        command( [ $command, $arg, ... ] )

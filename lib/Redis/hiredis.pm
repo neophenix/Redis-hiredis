@@ -1,7 +1,7 @@
 package Redis::hiredis;
 
 use strict;
-our $VERSION = "0.9.2.8";
+our $VERSION = "0.10.1";
 require XSLoader;
 XSLoader::load('Redis::hiredis', $VERSION);
 
@@ -18,6 +18,9 @@ sub new {
 
     if(exists $args{host}) {
         $self->connect($args{host}, defined $args{port} ? $args{port} : 6379);
+    }
+    elsif (exists $args{path}) {
+        $self->connect_unix($args{path});
     }
 
     return $self;
@@ -63,11 +66,14 @@ B<NOTE> Versions >= 0.9.2 and <= 0.9.2.4 are not compatible with prior versions
 
 =over 4
 
-=item new([utf8 => 1], [host => "localhost"], [port => 6379])
+=item new([utf8 => 1], [host => "localhost"], [port => 6379], [path => "/tmp/redis.sock"])
 
 Creates a new Redis::hiredis object.
 
 If the host attribute is provided the L</connect> method will automatically be
+called.
+
+If the path attribute is provided the L</connect_unix> method will automatically be
 called.
 
 =item connect( $hostname, $port )
@@ -75,6 +81,10 @@ called.
 C<$hostname> is the hostname of the Redis server to connect to
 
 C<$port> is the port to connect on.  Default 6379
+
+=item connect_unix( $path )
+
+C<$path> is the path to the unix socket
 
 =item command( $command_and_args )
 
