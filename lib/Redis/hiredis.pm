@@ -1,7 +1,7 @@
 package Redis::hiredis;
 
 use strict;
-our $VERSION = "0.9.2.8";
+our $VERSION = "0.10.1.0";
 require XSLoader;
 XSLoader::load('Redis::hiredis', $VERSION);
 
@@ -18,6 +18,12 @@ sub new {
 
     if(exists $args{host}) {
         $self->connect($args{host}, defined $args{port} ? $args{port} : 6379);
+    }
+    elsif (exists $args{path} && -S $args{path}) {
+        $self->connect_unix($args{path});
+    }
+    elsif (exists $args{fd}) {
+        $self->connect_fd($args{fd});
     }
 
     return $self;

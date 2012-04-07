@@ -1,18 +1,18 @@
 Changes
 COPYRIGHT
+fmacros.h
+hiredis.c
+hiredis.h
+lib/Redis/hiredis.pm
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
+net.c
+net.h
 ppport.h
 README
-hiredis.xs
-lib-fmacros.h
-lib-hiredis.c
-lib-hiredis.h
-lib-net.c
-lib-net.h
-lib-sds.c
-lib-sds.h
-lib-util.h
+Redis-hiredis.xs
+sds.c
+sds.h
 t/001_strings.t
 t/002_generic.t
 t/003_lists.t
@@ -24,5 +24,7 @@ t/008_pipeline.t
 t/009_errors.t
 t/010_argv.t
 t/011_autoload.t
-hiredis.pm
+t/012_connect_unix.t
+t/013_connect_fd.t
 typemap
+util.h
