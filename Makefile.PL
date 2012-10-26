@@ -13,5 +13,6 @@ WriteMakefile(
   VERSION_FROM    => 'lib/Redis/hiredis.pm',
   OBJECT          => "Redis-hiredis.o $ofiles",
   C               => $cfiles,
-  OPTIMIZE        => $ENV{'OPTIMIZE'}
+  OPTIMIZE        => $ENV{'OPTIMIZE'},
+  CC              => 'gcc'
 );
