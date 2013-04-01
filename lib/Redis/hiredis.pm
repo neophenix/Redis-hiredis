@@ -27,9 +27,13 @@ sub new {
 }
 
 sub AUTOLOAD {
-    my $self = shift;
     (my $method = $AUTOLOAD) =~ s/.*:://;
-    $self->command($method, @_);
+
+    # cache method for future calls
+    no strict 'refs';
+    *$AUTOLOAD = sub { shift->command($method, @_) };
+
+    goto $method;
 }
 
 1;
