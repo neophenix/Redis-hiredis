@@ -1,3 +1,7 @@
+0.11.0  - Tue Apr 02 10:09:00 EDT 2013
+        * Cache AUTOLOAD functions by Songmu
+        * Bump hiredis version to latest by Songmu
+
 0.10.2  - Tue Jun 12 11:06:00 EDT 2012
         * update net.c to latest bits from hiredis, mostly to pull in change to use poll and not select
 
