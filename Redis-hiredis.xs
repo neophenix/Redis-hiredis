@@ -204,3 +204,4 @@ redis_hiredis_DESTROY(self)
     CODE:
         if ( self->context != NULL )
             redisFree(self->context);
+        free(self);
