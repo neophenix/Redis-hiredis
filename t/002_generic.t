@@ -1,14 +1,16 @@
-use Test::More tests => 18;
+use strict;
+use Test::More tests => 27;
 use Data::Dumper;
 require_ok ( 'Redis::hiredis' );
 my $h = Redis::hiredis->new();
 isa_ok($h, 'Redis::hiredis');
 
 SKIP: {
-    skip "No REDISHOST defined", 16 if ( ! defined $ENV{'REDISHOST'} );
+    skip "No REDISHOST defined", 25 if ( ! defined $ENV{'REDISHOST'} );
 
     my $host = $ENV{'REDISHOST'};
     my $port = $ENV{'REDISPORT'} || 6379;
+    my $scan_count = $ENV{REDIS_SCAN_COUNT} || 10000;
 
     my $r;
     my $c = $h->connect($host, $port);
@@ -26,6 +28,32 @@ SKIP: {
 
     $r = $h->command('keys '.$prefix.'fo*');
     is($r->[0], $prefix.'foo', 'keys');
+
+    for(1..100) {
+      $h->command("set ".$prefix."num$_ $_");
+    }
+
+    $r = $h->command("scan 0");
+    is(ref($r), 'ARRAY', 'scan correct replay 1');
+    is(@$r, 2, 'scan correct replay 2');
+    like($r->[0], qr/^\d+$/, 'scan correct replay 3');
+    is(ref($r->[1]), 'ARRAY', 'scan correct replay 4');
+    is(@{$r->[1]}, 10, 'scan correct replay 5');
+    $r = $h->command("scan 0 count 50");
+    is(@{$r->[1]}, 50, 'scan correct replay 6');
+
+    my $cur = 0;
+    my @keys;
+
+    do {
+      $r = $h->command("scan $cur match ${prefix}num\*" .  (!$cur ? " count $scan_count" : ""));
+      $cur = $r->[0];
+      push @keys, @{$r->[1]};
+    }while($cur);
+
+    is(@keys, 100, "scan correct replay 7");
+    like($keys[10], qr/^${prefix}num\d+$/, "scan correct replay 8");
+    like($keys[80], qr/^${prefix}num\d+$/, "scan correct replay 9");
 
     $r = $h->command('randomkey');
     isnt($r, undef, 'randomkey');

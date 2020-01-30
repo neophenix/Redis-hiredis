@@ -1,10 +1,10 @@
-use Test::More tests => 21;
+use Test::More tests => 23;
 require_ok ( 'Redis::hiredis' );
 my $h = Redis::hiredis->new();
 isa_ok($h, 'Redis::hiredis');
 
 SKIP: {
-    skip "No REDISHOST defined", 19 if ( ! defined $ENV{'REDISHOST'} );
+    skip "No REDISHOST defined", 21 if ( ! defined $ENV{'REDISHOST'} );
 
     my $host = $ENV{'REDISHOST'};
     my $port = $ENV{'REDISPORT'} || 6379;
@@ -23,6 +23,10 @@ SKIP: {
     is($r, 1, 'zadd');
     $r = $h->command('zadd '.$prefix.'foo 5 boo');
     is($r, 1, 'zadd');
+
+    $r = $h->command('zscan '.$prefix.'foo 0');
+    is(ref($r), 'ARRAY', 'zscan 1');
+    is(@{$r->[1]}, 4*2, 'zscan 2');
 
     $r = $h->command('zrem '.$prefix.'foo boo');
     is($r, 1, 'zrem');
