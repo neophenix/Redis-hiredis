@@ -54,6 +54,6 @@ SKIP: {
     $r = $h->exec();
     ok(ref $r eq 'ARRAY', 'txn w/ error return');
     is($r->[0], 'OK', 'txn w/ error return [0]');
-    like($r->[1], qr/^ERR/, 'txn w/ error return [1]');
+    like($r->[1], qr/^(ERR|WRONGTYPE)/, 'txn w/ error return [1]');
     is($r->[2], 'OK', 'txn w/ error return [2]');
 };

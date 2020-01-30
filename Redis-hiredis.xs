@@ -57,6 +57,9 @@ SV * _read_bulk_reply (Redis__hiredis self, redisReply *reply) {
     else if ( reply->type == REDIS_REPLY_INTEGER ) {
         sv = newSViv(reply->integer);
     }
+    else if ( reply->type == REDIS_REPLY_ARRAY ) {
+        sv = _read_multi_bulk_reply(self, reply);
+    }
     else {
         // either REDIS_REPLY_NIL or something is awry
         sv = newSV(0);
