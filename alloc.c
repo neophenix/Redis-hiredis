@@ -1,9 +1,5 @@
-/* Extracted from anet.c to work properly with Hiredis error reporting.
- *
- * Copyright (c) 2009-2011, Salvatore Sanfilippo <antirez at gmail dot com>
- * Copyright (c) 2010-2014, Pieter Noordhuis <pcnoordhuis at gmail dot com>
- * Copyright (c) 2015, Matt Stancliff <matt at genges dot com>,
- *                     Jan-Erik Rediger <janerik at fnordig dot com>
+/*
+ * Copyright (c) 2020, Michael Grunder <michael dot grunder at gmail dot com>
  *
  * All rights reserved.
  *
@@ -32,18 +28,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __NET_H
-#define __NET_H
+#include "fmacros.h"
+#include "alloc.h"
+#include <string.h>
 
-#include "hiredis.h"
+void *hi_malloc(size_t size) {
+    void *ptr = malloc(size);
+    if (ptr == NULL)
+        HIREDIS_OOM_HANDLER;
 
-int redisCheckSocketError(redisContext *c);
-int redisContextSetTimeout(redisContext *c, const struct timeval tv);
-int redisContextConnectTcp(redisContext *c, const char *addr, int port, const struct timeval *timeout);
-int redisContextConnectBindTcp(redisContext *c, const char *addr, int port,
-                               const struct timeval *timeout,
-                               const char *source_addr);
-int redisContextConnectUnix(redisContext *c, const char *path, const struct timeval *timeout);
-int redisKeepAlive(redisContext *c, int interval);
+    return ptr;
+}
 
-#endif
+void *hi_calloc(size_t nmemb, size_t size) {
+    void *ptr = calloc(nmemb, size);
+    if (ptr == NULL)
+        HIREDIS_OOM_HANDLER;
+
+    return ptr;
+}
+
+void *hi_realloc(void *ptr, size_t size) {
+    void *newptr = realloc(ptr, size);
+    if (newptr == NULL)
+        HIREDIS_OOM_HANDLER;
+
+    return newptr;
+}
+
+char *hi_strdup(const char *str) {
+    char *newstr = strdup(str);
+    if (newstr == NULL)
+        HIREDIS_OOM_HANDLER;
+
+    return newstr;
+}

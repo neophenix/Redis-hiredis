@@ -2,7 +2,7 @@ require 5.004 ;
 use ExtUtils::MakeMaker 5.16 ;
 use Config ;
 
-my @parts = qw/dict hiredis net sds/;
+my @parts = qw/alloc async dict hiredis net read sds/;
 my $cfiles = [ map { "$_.c" } @parts ];
 my $ofiles = join ' ', map { "$_.o" } @parts;
 

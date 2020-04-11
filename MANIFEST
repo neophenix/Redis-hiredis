@@ -1,10 +1,12 @@
 Changes
-COPYRIGHT
 hiredis-COPYRIGHT
+hiredis-CHANGELOG.md
 Makefile.PL
 MANIFEST
 ppport.h
 README
+alloc.c
+alloc.h
 async.c
 async.h
 dict.c
@@ -14,8 +16,12 @@ hiredis.c
 hiredis.h
 net.c
 net.h
+read.c
+read.h
 sds.c
 sds.h
+sdsalloc.h
+test.c
 t/001_strings.t
 t/002_generic.t
 t/003_lists.t

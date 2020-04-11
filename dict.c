@@ -34,6 +34,7 @@
  */
 
 #include "fmacros.h"
+#include "alloc.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
@@ -71,7 +72,7 @@ static void _dictReset(dict *ht) {
 
 /* Create a new hash table */
 static dict *dictCreate(dictType *type, void *privDataPtr) {
-    dict *ht = malloc(sizeof(*ht));
+    dict *ht = hi_malloc(sizeof(*ht));
     _dictInit(ht,type,privDataPtr);
     return ht;
 }
@@ -142,7 +143,7 @@ static int dictAdd(dict *ht, void *key, void *val) {
         return DICT_ERR;
 
     /* Allocates the memory and stores key */
-    entry = malloc(sizeof(*entry));
+    entry = hi_malloc(sizeof(*entry));
     entry->next = ht->table[index];
     ht->table[index] = entry;
 
@@ -161,7 +162,7 @@ static int dictReplace(dict *ht, void *key, void *val) {
     dictEntry *entry, auxentry;
 
     /* Try to add the element. If the key
-     * does not exists dictAdd will suceed. */
+     * does not exists dictAdd will succeed. */
     if (dictAdd(ht, key, val) == DICT_OK)
         return 1;
     /* It already exists, get the entry */
@@ -256,7 +257,7 @@ static dictEntry *dictFind(dict *ht, const void *key) {
 }
 
 static dictIterator *dictGetIterator(dict *ht) {
-    dictIterator *iter = malloc(sizeof(*iter));
+    dictIterator *iter = hi_malloc(sizeof(*iter));
 
     iter->ht = ht;
     iter->index = -1;
@@ -293,7 +294,7 @@ static void dictReleaseIterator(dictIterator *iter) {
 
 /* Expand the hash table if needed */
 static int _dictExpandIfNeeded(dict *ht) {
-    /* If the hash table is empty expand it to the intial size,
+    /* If the hash table is empty expand it to the initial size,
      * if the table is "full" dobule its size. */
     if (ht->size == 0)
         return dictExpand(ht, DICT_HT_INITIAL_SIZE);
